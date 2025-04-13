@@ -1,14 +1,146 @@
-<!DOCTYPE html>
-<html lang="es">
+<!DOCTYPE html><html lang="es">
 <head>
-  <link rel="stylesheet" href="../style.css">
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RD77 - Texture Pack Creator</title>
+  <title>Procesador de Texture Pack</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    input, textarea { display: block; margin-bottom: 10px; }
+    .download-links a { display: block; margin-bottom: 5px; }
+  </style>
 </head>
 <body>
-  <header></header>
-  <main></main>
-  <footer></footer>
-</body>
+  <h1>Registro de Texture Pack</h1>
+  <form id="textureForm">
+    <label>
+      Nombre del Texture Pack:
+      <input type="text" id="textureName" required>
+    </label>
+    <label>
+      Versión:
+      <input type="text" id="version" required>
+    </label>
+    <label>
+      Descripción:
+      <textarea id="descripcion" rows="3" required></textarea>
+    </label>
+    <label>
+      Color 1:
+      <input type="color" id="color1" value="#ff0000">
+    </label>
+    <label>
+      Color 2:
+      <input type="color" id="color2" value="#0000ff">
+    </label>
+    <label>
+      Imagen a Redimensionar:
+      <input type="file" id="imagenRedimensionar" accept="image/*" required>
+    </label>
+    <button type="submit">Enviar y Procesar</button>
+  </form>  <div id="resultado" style="margin-top:20px;"></div>
+  <div class="download-links" id="downloadLinks"></div>  <script>
+    function hsbFromHex(hex) {
+      if(hex.charAt(0) === '#') hex = hex.substr(1);
+      const r = parseInt(hex.substr(0,2), 16) / 255;
+      const g = parseInt(hex.substr(2,2), 16) / 255;
+      const b = parseInt(hex.substr(4,2), 16) / 255;
+      const max = Math.max(r, g, b);
+      const min = Math.min(r, g, b);
+      const delta = max - min;
+      const brightness = max;
+      const saturation = (max === 0) ? 0 : delta / max;
+      let hue = 0;
+      if(delta !== 0) {
+        if(max === r) hue = 60 * (((g - b) / delta) % 6);
+        else if(max === g) hue = 60 * (((b - r) / delta) + 2);
+        else if(max === b) hue = 60 * (((r - g) / delta) + 4);
+      }
+      if(hue < 0) hue += 360;
+      return {
+        hue: hue.toFixed(2),
+        saturation: (saturation * 100).toFixed(2),
+        brightness: (brightness * 100).toFixed(2)
+      };
+    }
+
+    function resizeImage(img, width, height) {
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, width, height);
+      return canvas;
+    }
+
+    function loadImage(src) {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.src = src;
+        img.onload = () => resolve(img);
+      });
+    }
+
+    function createComposite(img1, img2, img3) {
+      const canvas = document.createElement('canvas');
+      canvas.width = 450;
+      canvas.height = 450;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img1, 0, 0, 150, 450);
+      ctx.drawImage(img2, 0, 0, 150, 450, 150, 0, 150, 450);
+      ctx.drawImage(img3, 0, 0, 150, 450, 300, 0, 150, 450);
+      return canvas;
+    }
+
+    document.getElementById('textureForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const textureName = document.getElementById('textureName').value;
+      const version = document.getElementById('version').value;
+      const descripcion = document.getElementById('descripcion').value;
+      const color1 = document.getElementById('color1').value;
+      const color2 = document.getElementById('color2').value;
+      const imagenFile = document.getElementById('imagenRedimensionar').files[0];
+
+      const color1HSB = hsbFromHex(color1);
+      const color2HSB = hsbFromHex(color2);
+
+      const resultadoDiv = document.getElementById('resultado');
+      resultadoDiv.innerHTML = `
+        <h3>Resultados del Cálculo de Colores</h3>
+        <p>Color 1: HUE: ${color1HSB.hue}°, Saturación: ${color1HSB.saturation}%, Brillo: ${color1HSB.brightness}%</p>
+        <p>Color 2: HUE: ${color2HSB.hue}°, Saturación: ${color2HSB.saturation}%, Brillo: ${color2HSB.brightness}%</p>
+      `;
+
+      const userImg = new Image();
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        userImg.src = event.target.result;
+      }
+      reader.readAsDataURL(imagenFile);
+
+      userImg.onload = async function() {
+        const resizedUserImg = resizeImage(userImg, 450, 450);
+
+        const base = await loadImage('./resources/base/GJ_Gamesheet03-hd.png');
+        const c1 = await loadImage('./resources/color_1/GJ_Gamesheet031-hd.png');
+        const c2 = await loadImage('./resources/color_1/GJ_Gamesheet032-hd.png');
+
+        const composite = createComposite(base, c1, c2);
+
+        const jsonBlob = new Blob([JSON.stringify({ nombre: textureName, version, descripcion }, null, 2)], {type: 'application/json'});
+        const jsonURL = URL.createObjectURL(jsonBlob);
+        const resizedURL = resizedUserImg.toDataURL('image/png');
+        const compositeURL = composite.toDataURL('image/png');
+
+        const downloadDiv = document.getElementById('downloadLinks');
+        downloadDiv.innerHTML = `
+          <h3>Descargar Archivos</h3>
+          <a href="${jsonURL}" download="texture_info.json">Descargar JSON</a>
+          <a href="${resizedURL}" download="imagen_redimensionada.png">Descargar Imagen Redimensionada</a>
+          <a href="${compositeURL}" download="imagen_combinada.png">Descargar Imagen Combinada</a>
+        `;
+
+        resultadoDiv.innerHTML += `<h3>Imagen Redimensionada</h3><img src="${resizedURL}" alt="Redimensionada">`;
+        resultadoDiv.innerHTML += `<h3>Imagen Combinada</h3><img src="${compositeURL}" alt="Combinada">`;
+      };
+    });
+  </script></body>
 </html>
