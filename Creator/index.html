@@ -43,6 +43,73 @@
   <div class="download-links" id="downloadLinks"></div>
 
   <script>
+function applyHSBToImage(image, hsb) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 450;
+  canvas.height = 450;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(image, 0, 0, 450, 450);
+
+  const imageData = ctx.getImageData(0, 0, 450, 450);
+  const data = imageData.data;
+
+  const h = parseFloat(hsb.hue);
+  const s = parseFloat(hsb.saturation) / 100;
+  const b = parseFloat(hsb.brightness) / 100;
+
+  for (let i = 0; i < data.length; i += 4) {
+    // Convert RGB to HSB
+    const r = data[i] / 255;
+    const g = data[i + 1] / 255;
+    const bOld = data[i + 2] / 255;
+
+    const max = Math.max(r, g, bOld);
+    const min = Math.min(r, g, bOld);
+    const delta = max - min;
+
+    let hue = 0;
+    let sat = max === 0 ? 0 : delta / max;
+    let bri = max;
+
+    if (delta !== 0) {
+      if (max === r) hue = 60 * (((g - bOld) / delta) % 6);
+      else if (max === g) hue = 60 * (((bOld - r) / delta) + 2);
+      else hue = 60 * (((r - g) / delta) + 4);
+    }
+
+    if (hue < 0) hue += 360;
+
+    // Replace with provided H, S, B
+    const newRGB = hsbToRgb(h, s, b);
+    data[i] = newRGB.r;
+    data[i + 1] = newRGB.g;
+    data[i + 2] = newRGB.b;
+  }
+
+  ctx.putImageData(imageData, 0, 0);
+  return canvas;
+}
+
+function hsbToRgb(h, s, v) {
+  const c = v * s;
+  const x = c * (1 - Math.abs((h / 60) % 2 - 1));
+  const m = v - c;
+  let r, g, b;
+
+  if (h < 60) [r, g, b] = [c, x, 0];
+  else if (h < 120) [r, g, b] = [x, c, 0];
+  else if (h < 180) [r, g, b] = [0, c, x];
+  else if (h < 240) [r, g, b] = [0, x, c];
+  else if (h < 300) [r, g, b] = [x, 0, c];
+  else [r, g, b] = [c, 0, x];
+
+  return {
+    r: Math.round((r + m) * 255),
+    g: Math.round((g + m) * 255),
+    b: Math.round((b + m) * 255)
+  };
+}
+    
     function hsbFromHex(hex) {
       if(hex.charAt(0) === '#') hex = hex.substr(1);
       const r = parseInt(hex.substr(0,2), 16) / 255;
