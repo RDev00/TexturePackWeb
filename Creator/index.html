@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="es">
+<!DOCTYPE html>
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <title>Procesador de Texture Pack</title>
@@ -36,8 +37,12 @@
       <input type="file" id="imagenRedimensionar" accept="image/*" required>
     </label>
     <button type="submit">Enviar y Procesar</button>
-  </form>  <div id="resultado" style="margin-top:20px;"></div>
-  <div class="download-links" id="downloadLinks"></div>  <script>
+  </form>
+
+  <div id="resultado" style="margin-top:20px;"></div>
+  <div class="download-links" id="downloadLinks"></div>
+
+  <script>
     function hsbFromHex(hex) {
       if(hex.charAt(0) === '#') hex = hex.substr(1);
       const r = parseInt(hex.substr(0,2), 16) / 255;
@@ -79,14 +84,16 @@
       });
     }
 
-    function createComposite(img1, img2, img3) {
+    function createVerticalComposite(images) {
       const canvas = document.createElement('canvas');
       canvas.width = 450;
-      canvas.height = 450;
+      canvas.height = 450 * images.length;
       const ctx = canvas.getContext('2d');
-      ctx.drawImage(img1, 0, 0, 150, 450);
-      ctx.drawImage(img2, 0, 0, 150, 450, 150, 0, 150, 450);
-      ctx.drawImage(img3, 0, 0, 150, 450, 300, 0, 150, 450);
+
+      images.forEach((img, i) => {
+        ctx.drawImage(img, 0, 0, img.width, img.height, 0, i * 450, 450, 450);
+      });
+
       return canvas;
     }
 
@@ -119,28 +126,41 @@
       userImg.onload = async function() {
         const resizedUserImg = resizeImage(userImg, 450, 450);
 
-        const base = await loadImage('./resources/base/GJ_Gamesheet03-hd.png');
-        const c1 = await loadImage('./resources/color_1/GJ_Gamesheet031-hd.png');
-        const c2 = await loadImage('./resources/color_1/GJ_Gamesheet032-hd.png');
+        const images03 = await Promise.all([
+          loadImage('./resources/base_color/GJ_Gamesheet03.png'),
+          loadImage('./resources/principal_color/GJ_Gamesheet031.png'),
+          loadImage('./resources/secondary_color/GJ_Gamesheet032.png')
+        ]);
 
-        const composite = createComposite(base, c1, c2);
+        const images04 = await Promise.all([
+          loadImage('./resources/base_color/GJ_Gamesheet04.png'),
+          loadImage('./resources/principal_color/GJ_Gamesheet041.png'),
+          loadImage('./resources/secondary_color/GJ_Gamesheet042.png')
+        ]);
+
+        const composite03 = createVerticalComposite(images03);
+        const composite04 = createVerticalComposite(images04);
 
         const jsonBlob = new Blob([JSON.stringify({ nombre: textureName, version, descripcion }, null, 2)], {type: 'application/json'});
         const jsonURL = URL.createObjectURL(jsonBlob);
         const resizedURL = resizedUserImg.toDataURL('image/png');
-        const compositeURL = composite.toDataURL('image/png');
+        const composite03URL = composite03.toDataURL('image/png');
+        const composite04URL = composite04.toDataURL('image/png');
 
         const downloadDiv = document.getElementById('downloadLinks');
         downloadDiv.innerHTML = `
           <h3>Descargar Archivos</h3>
           <a href="${jsonURL}" download="texture_info.json">Descargar JSON</a>
           <a href="${resizedURL}" download="imagen_redimensionada.png">Descargar Imagen Redimensionada</a>
-          <a href="${compositeURL}" download="imagen_combinada.png">Descargar Imagen Combinada</a>
+          <a href="${composite03URL}" download="imagen_combinada_03.png">Descargar Imagen Combinada 03</a>
+          <a href="${composite04URL}" download="imagen_combinada_04.png">Descargar Imagen Combinada 04</a>
         `;
 
         resultadoDiv.innerHTML += `<h3>Imagen Redimensionada</h3><img src="${resizedURL}" alt="Redimensionada">`;
-        resultadoDiv.innerHTML += `<h3>Imagen Combinada</h3><img src="${compositeURL}" alt="Combinada">`;
+        resultadoDiv.innerHTML += `<h3>Imagen Combinada 03</h3><img src="${composite03URL}" alt="Combinada 03">`;
+        resultadoDiv.innerHTML += `<h3>Imagen Combinada 04</h3><img src="${composite04URL}" alt="Combinada 04">`;
       };
     });
-  </script></body>
+  </script>
+</body>
 </html>
