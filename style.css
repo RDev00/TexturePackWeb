@@ -11,3 +11,8 @@ body {
   grid-template-rows: auto 1fr auto;
   background-color: black;
 }
+
+header {
+  background-color: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(20px);
+}
