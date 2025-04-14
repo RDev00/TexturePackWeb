@@ -209,4 +209,12 @@ form.addEventListener('submit', async event => {
   });
   const linktg = crearLink(tg, 'tab-gradient-hd.png');
   linkDivs.appendChild(linktg);
+  
+  const apis = await generarTextura({
+    imageSources: ['./resources/base_color/APISheet.png', './resources/principal_color/APISheet1.png', './resources/secondary_color/APISheet2.png'],
+    w: 825, h: 918,
+    colorPrin: colorPrincipal, colorSec: colorSecundario
+  });
+  const linkapis = crearLink(apis, 'APISheet-hd.png');
+  linkDivs.appendChild(linkapis);
 })
