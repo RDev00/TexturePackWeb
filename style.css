@@ -139,3 +139,10 @@ main #links h2 {
   border-radius: 10px;
   width: 70%;
 }
+.colorText {
+  font-size: 18px;
+  font-weight: 600;
+  transform: translateY(10px);
+  text-align: left;
+  width: 70%;
+}

@@ -126,7 +126,7 @@ geode tab: 788x107
 
 form.addEventListener('submit', async event => {
   event.preventDefault();
-
+  
   const colorPrincipal = document.getElementById('color_1').value;
   const colorSecundario = document.getElementById('color_2').value;
   
