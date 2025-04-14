@@ -124,6 +124,7 @@ main #links {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 25px;
 }
 main #links h2 {
   font-size: 22px;
