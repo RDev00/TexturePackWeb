@@ -11,6 +11,9 @@ body {
   grid-template-rows: auto 1fr auto;
   background-color: black;
 }
+#img01 { background-image: url('./backgrounds/background_01.png'); background-size: cover;}
+#img02 { background-image: url('./backgrounds/background_02.png'); background-size: cover; }
+#img03 { background-image: url('./backgrounds/background_03.png'); background-size: cover; }
 
 header {
   background-color: rgba(0, 0, 0, 0.2);
