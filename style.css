@@ -82,6 +82,7 @@ footer {
   border-radius: 15px;
   justify-content: center;
   align-items: center;
+  max-width: 450px;
 }
 #form input {
   width: 90%;
@@ -125,6 +126,7 @@ main #links {
   justify-content: center;
   align-items: center;
   gap: 25px;
+  max-width: 450px;
 }
 main #links h2 {
   font-size: 22px;
@@ -138,6 +140,7 @@ main #links h2 {
   padding: 5px;
   border-radius: 10px;
   width: 70%;
+  text-decoration: none;
 }
 .colorText {
   font-size: 18px;
