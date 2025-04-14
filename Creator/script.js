@@ -143,7 +143,7 @@ form.addEventListener('submit', async event => {
     w: 889, h: 1143,
     colorPrin: colorPrincipal, colorSec: colorSecundario
   });
-  const linkgeoBS = crearLink(geoBs, 'BlankSheet.png');
+  const linkgeoBS = crearLink(geoBs, 'BlankSheet-hd.png');
   linkDivs.appendChild(linkgeoBS);
 
   const btn01 = await generarTextura({
@@ -203,7 +203,7 @@ form.addEventListener('submit', async event => {
   linkDivs.appendChild(linksquare1);
 
   const tg = await generarTextura({
-    imageSources: ['./resources/principal_color/tab-gradient.png', './resources/principal_color/tab-gradient.png', './resources/principal_color/tab-gradient.png'],
+    imageSources: ['./resources/principal_color/tab-gradient1.png', './resources/principal_color/tab-gradient1.png', './resources/principal_color/tab-gradient1.png'],
     w: 788, h: 107,
     colorPrin: colorPrincipal, colorSec: colorPrincipal
   });
