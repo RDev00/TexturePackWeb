@@ -58,26 +58,15 @@ async function generarTextura({ imageSources, w, h, colorPrin, colorSec }) {
       hsbColor.brightness / 100
     );
   
-    for (let i = 0; i < data.length; i += 4) {
-      const alpha = data[i + 3];
-      if (alpha === 0) continue; // No modificamos píxeles completamente transparentes
-  
       for (let i = 0; i < data.length; i += 4) {
-      const alpha = data[i + 3];
-      if (alpha === 0) continue;
-    
-      // Normalizar los colores originales
-      const originalR = data[i] / 255;
-      const originalG = data[i + 1] / 255;
-      const originalB = data[i + 2] / 255;
-    
-      // Promedio de luminosidad o intensidad
-      const intensity = (originalR + originalG + originalB) / 3;
-    
-      data[i] = tint.r * intensity;
-      data[i + 1] = tint.g * intensity;
-      data[i + 2] = tint.b * intensity;
-    }
+        const alpha = data[i + 3];
+        if (alpha === 0) continue; // No modificamos píxeles completamente transparentes
+        const lum = 0.3 * data[i] + 0.59 * data[i + 1] + 0.11 * data[i + 2];
+        data[i] = tint.r * (lum / 255);   // Opción original que queda muy oscura
+        // Mejor:
+        data[i] = tint.r * (lum / 100);   // ¡Más brillante!
+        data[i + 1] = tint.g * (lum / 100);
+        data[i + 2] = tint.b * (lum / 100);
     }
   
     ctx.putImageData(imageData, 0, 0);
