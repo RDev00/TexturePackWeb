@@ -116,7 +116,7 @@ const linkDivs = document.getElementById('links');
 
 /*
 Tamaños:
-btn01: 80x80,
+botones: 80x80,
 launchsheet: 934x255,
 gs04: 1133x1133,
 slider: 76x80,
@@ -148,9 +148,65 @@ form.addEventListener('submit', async event => {
 
   const btn01 = await generarTextura({
     imageSources: ['./resources/base_color/GJ_button_00.png', './resources/both_color/GJ_button_00.png', './resources/both_color/GJ_button_00.png'],
-    w: 889, h: 1143,
+    w: 80, h: 80,
     colorPrin: colorPrincipal, colorSec: colorPrincipal
   });
   const linkbtn01 = crearLink(btn01, 'GJ_button_01-hd.png');
   linkDivs.appendChild(linkbtn01);
+
+  const btn02 = await generarTextura({
+    imageSources: ['./resources/base_color/GJ_button_00.png', './resources/both_color/GJ_button_00.png', './resources/both_color/GJ_button_00.png'],
+    w: 80, h: 80,
+    colorPrin: colorSecundario, colorSec: colorSecundario
+  });
+  const linkbtn02 = crearLink(btn02, 'GJ_button_02-hd.png');
+  linkDivs.appendChild(linkbtn02);
+
+  const sl01 = await generarTextura({
+    imageSources: ['./resources/base_color/GJ_moveBtn.png', './resources/both_color/GJ_moveBtn.png', './resources/both_color/GJ_moveBtn.png'],
+    w: 76, h: 80,
+    colorPrin: colorPrincipal, colorSec: colorPrincipal
+  });
+  const linksl01 = crearLink(sl01, 'GJ_moveBtn-hd.png');
+  linkDivs.appendChild(linksl01);
+
+  const sl02 = await generarTextura({
+    imageSources: ['./resources/base_color/GJ_moveBtn.png', './resources/both_color/GJ_moveBtn.png', './resources/both_color/GJ_moveBtn.png'],
+    w: 76, h: 80,
+    colorPrin: colorSecundario, colorSec: colorSecundario
+  });
+  const linksl02 = crearLink(sl02, 'GJ_moveSBtn-hd.png');
+  linkDivs.appendChild(linksl02);
+
+  const gs04 = await generarTextura({
+    imageSources: ['./resources/base_color/GJ_GameSheet04.png', './resources/principal_color/GJ_GameSheet041.png', './resources/secondary_color/GJ_GameSheet042.png'],
+    w: 1133, h: 1133,
+    colorPrin: colorPrincipal, colorSec: colorSecundario
+  });
+  const linkgs04 = crearLink(gs04, 'GJ_Gamesheet04-hd.png');
+  linkDivs.appendChild(linkgs04);
+
+  const ls = await generarTextura({
+    imageSources: ['./resources/base_color/GJ_Launchsheet.png', './resources/principal_color/GJ_Launchsheet1.png', './resources/secondary_color/GJ_Launchsheet2.png'],
+    w: 934, h: 255,
+    colorPrin: colorPrincipal, colorSec: colorSecundario
+  });
+  const linkls = crearLink(ls, 'GJ_Launchsheet-hd.png');
+  linkDivs.appendChild(linkls);
+
+  const square1 = await generarTextura({
+    imageSources: ['./resources/base_color/GJ_square01.png', './resources/principal_color/GJ_square011.png', './resources/principal_color/GJ_square011.png'],
+    w: 160, h: 160,
+    colorPrin: colorPrincipal, colorSec: colorPrincipal
+  });
+  const linksquare1 = crearLink(square1, 'GJ_square01-hd.png');
+  linkDivs.appendChild(linksquare1);
+
+  const tg = await generarTextura({
+    imageSources: ['./resources/principal_color/tab-gradient.png', './resources/principal_color/tab-gradient.png', './resources/principal_color/tab-gradient.png'],
+    w: 788, h: 107,
+    colorPrin: colorPrincipal, colorSec: colorPrincipal
+  });
+  const linktg = crearLink(tg, 'tab-gradient-hd.png');
+  linkDivs.appendChild(linktg);
 })
