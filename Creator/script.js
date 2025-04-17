@@ -229,19 +229,51 @@ form.addEventListener('submit', async event => {
   });
   const apisImg = await canvaToImg(apis.toDataURL());
   
+  const goldFnt = await generarTextura({
+    imageSources: ['./resources/base_color/goldFont.png', './resources/secondary_color/goldFont2.png', './resources/secondary_color/goldFont2.png'],
+    w: 512, h: 512,
+    colorPrin: colorSecundario, colorSec: colorSecundario
+  });
+  const goldFntImg = await canvaToImg(goldFnt.toDataURL());
+  
+  const slgrv = await generarTextura({
+    imageSources: ['./resources/base_color/slidergroove.png', './resources/secondary_color/slidergroove2.png', './resources/secondary_color/slidergroove2.png'],
+    w: 420, h: 32,
+    colorPrin: colorPrincipal, colorSec: colorSecundario
+  });
+  const slgrvImg = await canvaToImg(slgrv.toDataURL());
+  
+  const slth = await generarTextura({
+    imageSources: ['./resources/base_color/sliderthumb.png', './resources/secondary_color/sliderthumb2.png', './resources/secondary_color/sliderthumb2.png'],
+    w: 76, h: 76,
+    colorPrin: colorSecundario, colorSec: colorSecundario
+  });
+  const slthImg = await canvaToImg(slth.toDataURL());
+  
+  const slthsel = await generarTextura({
+    imageSources: ['./resources/base_color/sliderthumb.png', './resources/secondary_color/sliderthumbsel2.png', './resources/secondary_color/sliderthumbsel2.png'],
+    w: 76, h: 76,
+    colorPrin: colorSecundario, colorSec: colorSecundario
+  });
+  const slthselImg = await canvaToImg(slthsel.toDataURL());
+  
   const archivos = [
     { name: 'GJ_Gamesheet03-hd.png', img: gs03Img},
     {name: 'GJ_Gamesheet04-hd.png', img: gs04Img},
     { name: 'GJ_button_01-hd.png', img: btn01Img },
     { name: 'GJ_button_02-hd.png', img: btn02Img },
-    { name: 'GJ_Launchsheet-hd-hd.png', img: lsImg },
+    { name: 'GJ_LaunchSheet-hd-hd.png', img: lsImg },
     { name: 'GJ_moveBtn-hd.png', img: sl01Img },
     { name: 'GJ_moveBtn-hd.png', img: sl01Img },
     { name: 'GJ_moveSBtn-hd.png', img: sl02Img },
     { name: 'GJ_square01-hd.png', img: square01Img },
     { name: 'geode.loader/BlankSheet-hd.png', img: geoBsImg },
     { name: 'geode.loader/tag-gradient.png', img: tgImg },
-    { name: 'geode.loader/APISheet-hd.png', img: apisImg }
+    { name: 'geode.loader/APISheet-hd.png', img: apisImg },
+    { name: 'goldFont-hd.png', img: goldFntImg },
+    { name: 'slidergroove-hd.png', img: slgrvImg },
+    { name: 'sliderthumb-hd.png', img: slthImg },
+    { name: 'sliderthumbsel-hd.png', img: slthselImg }
   ]
   const texturePackZip = await newZip(archivos);
   const texturePackLink = await crearLink(texturePackZip, tpname);
