@@ -262,7 +262,7 @@ form.addEventListener('submit', async event => {
     {name: 'GJ_Gamesheet04-hd.png', img: gs04Img},
     { name: 'GJ_button_01-hd.png', img: btn01Img },
     { name: 'GJ_button_02-hd.png', img: btn02Img },
-    { name: 'GJ_LaunchSheet-hd-hd.png', img: lsImg },
+    { name: 'GJ_LaunchSheet-hd.png', img: lsImg },
     { name: 'GJ_moveBtn-hd.png', img: sl01Img },
     { name: 'GJ_moveBtn-hd.png', img: sl01Img },
     { name: 'GJ_moveSBtn-hd.png', img: sl02Img },
