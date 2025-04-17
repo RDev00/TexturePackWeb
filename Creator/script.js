@@ -101,14 +101,31 @@ async function generarTextura({ imageSources, w, h, colorPrin, colorSec }) {
   //obtenemos la textura
   return canvas;
 }
-
-function crearLink(objeto, name){
+function crearLink(zip, name){
   const objLink = document.createElement('a');
-  objLink.href = objeto.toDataURL();
+  objLink.href = zip;
   objLink.download = name;
-  objLink.innerText = `Descargar imagen: ${name}`;
+  objLink.innerText = `Descargar Texture Pack`;
   objLink.classList.add('texturelink');
   return objLink
+}
+async function canvaToImg(dataURL) {
+  const parts = dataURL.split(';base64,');
+  const contentType = parts[0].split(':')[1];
+  const byteCharacters = atob(parts[1]);
+  const byteArrays = [];
+  for (let i = 0; i < byteCharacters.length; i++) {
+    byteArrays.push(byteCharacters.charCodeAt(i));
+  }
+  return new Blob([new Uint8Array(byteArrays)], { type: contentType });
+}
+async function newZip(files) {
+  const zip = new JSZip();
+  for (const file of files) {
+    zip.file(file.name, file.img);
+  }
+  const contenidoZip = await zip.generateAsync({ type: 'blob' });
+  return contenidoZip;
 }
 
 const form = document.getElementById('form');
@@ -127,6 +144,7 @@ geode tab: 788x107
 form.addEventListener('submit', async event => {
   event.preventDefault();
   
+  const tpname = document.getElementById('tpname').value;
   const colorPrincipal = document.getElementById('color_1').value;
   const colorSecundario = document.getElementById('color_2').value;
   
@@ -135,86 +153,92 @@ form.addEventListener('submit', async event => {
     w: 2048, h: 2048,
     colorPrin: colorPrincipal, colorSec: colorSecundario
   });
-  const linkgs03 = crearLink(gs03, 'GJ_Gamesheet03-hd.png');
-  linkDivs.appendChild(linkgs03);
+  const gs03Img = await canvaToImg(gs03);
 
   const geoBs = await generarTextura({
     imageSources: ['./resources/base_color/BlankSheet.png', './resources/principal_color/BlankSheet1.png', './resources/secondary_color/BlankSheet2.png'],
     w: 889, h: 1143,
     colorPrin: colorPrincipal, colorSec: colorSecundario
   });
-  const linkgeoBS = crearLink(geoBs, 'BlankSheet-hd.png');
-  linkDivs.appendChild(linkgeoBS);
+  const geoBsImg = await canvaToImg(geoBs);
 
   const btn01 = await generarTextura({
     imageSources: ['./resources/base_color/GJ_button_00.png', './resources/both_color/GJ_button_00.png', './resources/both_color/GJ_button_00.png'],
     w: 80, h: 80,
     colorPrin: colorPrincipal, colorSec: colorPrincipal
   });
-  const linkbtn01 = crearLink(btn01, 'GJ_button_01-hd.png');
-  linkDivs.appendChild(linkbtn01);
+  const btn01Img = await canvaToImg(bnt01);
 
   const btn02 = await generarTextura({
     imageSources: ['./resources/base_color/GJ_button_00.png', './resources/both_color/GJ_button_00.png', './resources/both_color/GJ_button_00.png'],
     w: 80, h: 80,
     colorPrin: colorSecundario, colorSec: colorSecundario
   });
-  const linkbtn02 = crearLink(btn02, 'GJ_button_02-hd.png');
-  linkDivs.appendChild(linkbtn02);
+  const btn02Img = await canvaToImg(btn02);
 
   const sl01 = await generarTextura({
     imageSources: ['./resources/base_color/GJ_moveBtn.png', './resources/both_color/GJ_moveBtn.png', './resources/both_color/GJ_moveBtn.png'],
     w: 76, h: 80,
     colorPrin: colorPrincipal, colorSec: colorPrincipal
   });
-  const linksl01 = crearLink(sl01, 'GJ_moveBtn-hd.png');
-  linkDivs.appendChild(linksl01);
+  const sl01Img = await canvaToImg(sl01);
 
   const sl02 = await generarTextura({
     imageSources: ['./resources/base_color/GJ_moveBtn.png', './resources/both_color/GJ_moveBtn.png', './resources/both_color/GJ_moveBtn.png'],
     w: 76, h: 80,
     colorPrin: colorSecundario, colorSec: colorSecundario
   });
-  const linksl02 = crearLink(sl02, 'GJ_moveSBtn-hd.png');
-  linkDivs.appendChild(linksl02);
+  const sl02Img = await canvaToImg(sl02);
 
   const gs04 = await generarTextura({
     imageSources: ['./resources/base_color/GJ_GameSheet04.png', './resources/principal_color/GJ_GameSheet041.png', './resources/secondary_color/GJ_GameSheet042.png'],
     w: 1133, h: 1133,
     colorPrin: colorPrincipal, colorSec: colorSecundario
   });
-  const linkgs04 = crearLink(gs04, 'GJ_Gamesheet04-hd.png');
-  linkDivs.appendChild(linkgs04);
+  const gs04Img = await canvaToImg(gs04);
 
   const ls = await generarTextura({
     imageSources: ['./resources/base_color/GJ_Launchsheet.png', './resources/principal_color/GJ_Launchsheet1.png', './resources/secondary_color/GJ_Launchsheet2.png'],
     w: 934, h: 255,
     colorPrin: colorPrincipal, colorSec: colorSecundario
   });
-  const linkls = crearLink(ls, 'GJ_Launchsheet-hd.png');
-  linkDivs.appendChild(linkls);
+  const lsImg = await canvaToImg(ls);
 
   const square1 = await generarTextura({
     imageSources: ['./resources/base_color/GJ_square01.png', './resources/principal_color/GJ_square011.png', './resources/principal_color/GJ_square011.png'],
     w: 160, h: 160,
     colorPrin: colorPrincipal, colorSec: colorPrincipal
   });
-  const linksquare1 = crearLink(square1, 'GJ_square01-hd.png');
-  linkDivs.appendChild(linksquare1);
+  const square01Img = await canvaToImg(square01);
 
   const tg = await generarTextura({
     imageSources: ['./resources/principal_color/tab-gradient1.png', './resources/principal_color/tab-gradient1.png', './resources/principal_color/tab-gradient1.png'],
     w: 788, h: 107,
     colorPrin: colorPrincipal, colorSec: colorPrincipal
   });
-  const linktg = crearLink(tg, 'tab-gradient-hd.png');
-  linkDivs.appendChild(linktg);
+  const tgImg = await canvaToImg(tg);
   
   const apis = await generarTextura({
     imageSources: ['./resources/base_color/APISheet.png', './resources/principal_color/APISheet1.png', './resources/secondary_color/APISheet2.png'],
     w: 825, h: 918,
     colorPrin: colorPrincipal, colorSec: colorSecundario
   });
-  const linkapis = crearLink(apis, 'APISheet-hd.png');
-  linkDivs.appendChild(linkapis);
+  const apisImg = await canvaToImg(apis);
+  
+  const archivos = [
+    { name: 'GJ_Gamesheet03-hd.png', img: gs3Img},
+    {name: 'GJ_Gamesheet04-hd.png', img: gs04Img},
+    { name: 'GJ_button_01-hd.png', img: btn01Img },
+    { name: 'GJ_button_02-hd.png', img: btn02Img },
+    { name: 'GJ_Launchsheet-hd-hd.png', img: lsImg },
+    { name: 'GJ_moveBtn-hd.png', img: sl01Img },
+    { name: 'GJ_moveBtn-hd.png', img: sl01Img },
+    { name: 'GJ_moveSBtn-hd.png', img: sl02Img },
+    { name: 'GJ_square01-hd.png', img: square01Img },
+    { name: 'geode.loader/BlankSheet-hd.png', img: geoBsImg },
+    { name: 'geode.loader/tag-gradient.png', img: tgImg },
+    { name: 'geode.loader/APISheet-hd.png', img: apisImg }
+  ]
+  const texturePackZip = await newZip(archivos);
+  const zipLink = await crearLink(texturePackZip, tpname);
 })
