@@ -103,8 +103,9 @@ async function generarTextura({ imageSources, w, h, colorPrin, colorSec }) {
 }
 function crearLink(zip, name){
   const objLink = document.createElement('a');
-  objLink.href = zip;
-  objLink.download = name;
+  const zipURL =URL.createObjectURL(zip);
+  objLink.href = zipURL;
+  objLink.download = `${name}.zip`;
   objLink.innerText = `Descargar Texture Pack`;
   objLink.classList.add('texturelink');
   return objLink
@@ -125,6 +126,9 @@ async function newZip(files) {
     zip.file(file.name, file.img);
   }
   const contenidoZip = await zip.generateAsync({ type: 'blob' });
+  if (contenidoZip) {
+    console.log('El zip fue creado:', contenidoZip)
+  }
   return contenidoZip;
 }
 
@@ -240,5 +244,6 @@ form.addEventListener('submit', async event => {
     { name: 'geode.loader/APISheet-hd.png', img: apisImg }
   ]
   const texturePackZip = await newZip(archivos);
-  const texturePackLink = await crearLink(texturePackZip, tpname)
+  const texturePackLink = await crearLink(texturePackZip, tpname);
+  linkDivs.appendChild(texturePackLink);
 })
