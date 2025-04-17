@@ -153,80 +153,80 @@ form.addEventListener('submit', async event => {
     w: 2048, h: 2048,
     colorPrin: colorPrincipal, colorSec: colorSecundario
   });
-  const gs03Img = await canvaToImg(gs03);
+  const gs03Img = await canvaToImg(gs03.toDataURL());
 
   const geoBs = await generarTextura({
     imageSources: ['./resources/base_color/BlankSheet.png', './resources/principal_color/BlankSheet1.png', './resources/secondary_color/BlankSheet2.png'],
     w: 889, h: 1143,
     colorPrin: colorPrincipal, colorSec: colorSecundario
   });
-  const geoBsImg = await canvaToImg(geoBs);
+  const geoBsImg = await canvaToImg(geoBs.toDataURL());
 
   const btn01 = await generarTextura({
     imageSources: ['./resources/base_color/GJ_button_00.png', './resources/both_color/GJ_button_00.png', './resources/both_color/GJ_button_00.png'],
     w: 80, h: 80,
     colorPrin: colorPrincipal, colorSec: colorPrincipal
   });
-  const btn01Img = await canvaToImg(bnt01);
+  const btn01Img = await canvaToImg(btn01.toDataURL());
 
   const btn02 = await generarTextura({
     imageSources: ['./resources/base_color/GJ_button_00.png', './resources/both_color/GJ_button_00.png', './resources/both_color/GJ_button_00.png'],
     w: 80, h: 80,
     colorPrin: colorSecundario, colorSec: colorSecundario
   });
-  const btn02Img = await canvaToImg(btn02);
+  const btn02Img = await canvaToImg(btn02.toDataURL());
 
   const sl01 = await generarTextura({
     imageSources: ['./resources/base_color/GJ_moveBtn.png', './resources/both_color/GJ_moveBtn.png', './resources/both_color/GJ_moveBtn.png'],
     w: 76, h: 80,
     colorPrin: colorPrincipal, colorSec: colorPrincipal
   });
-  const sl01Img = await canvaToImg(sl01);
+  const sl01Img = await canvaToImg(sl01.toDataURL());
 
   const sl02 = await generarTextura({
     imageSources: ['./resources/base_color/GJ_moveBtn.png', './resources/both_color/GJ_moveBtn.png', './resources/both_color/GJ_moveBtn.png'],
     w: 76, h: 80,
     colorPrin: colorSecundario, colorSec: colorSecundario
   });
-  const sl02Img = await canvaToImg(sl02);
+  const sl02Img = await canvaToImg(sl02.toDataURL());
 
   const gs04 = await generarTextura({
     imageSources: ['./resources/base_color/GJ_GameSheet04.png', './resources/principal_color/GJ_GameSheet041.png', './resources/secondary_color/GJ_GameSheet042.png'],
     w: 1133, h: 1133,
     colorPrin: colorPrincipal, colorSec: colorSecundario
   });
-  const gs04Img = await canvaToImg(gs04);
+  const gs04Img = await canvaToImg(gs04.toDataURL());
 
   const ls = await generarTextura({
     imageSources: ['./resources/base_color/GJ_Launchsheet.png', './resources/principal_color/GJ_Launchsheet1.png', './resources/secondary_color/GJ_Launchsheet2.png'],
     w: 934, h: 255,
     colorPrin: colorPrincipal, colorSec: colorSecundario
   });
-  const lsImg = await canvaToImg(ls);
+  const lsImg = await canvaToImg(ls.toDataURL());
 
   const square1 = await generarTextura({
     imageSources: ['./resources/base_color/GJ_square01.png', './resources/principal_color/GJ_square011.png', './resources/principal_color/GJ_square011.png'],
     w: 160, h: 160,
     colorPrin: colorPrincipal, colorSec: colorPrincipal
   });
-  const square01Img = await canvaToImg(square01);
+  const square01Img = await canvaToImg(square1.toDataURL());
 
   const tg = await generarTextura({
     imageSources: ['./resources/principal_color/tab-gradient1.png', './resources/principal_color/tab-gradient1.png', './resources/principal_color/tab-gradient1.png'],
     w: 788, h: 107,
     colorPrin: colorPrincipal, colorSec: colorPrincipal
   });
-  const tgImg = await canvaToImg(tg);
+  const tgImg = await canvaToImg(tg.toDataURL());
   
   const apis = await generarTextura({
     imageSources: ['./resources/base_color/APISheet.png', './resources/principal_color/APISheet1.png', './resources/secondary_color/APISheet2.png'],
     w: 825, h: 918,
     colorPrin: colorPrincipal, colorSec: colorSecundario
   });
-  const apisImg = await canvaToImg(apis);
+  const apisImg = await canvaToImg(apis.toDataURL());
   
   const archivos = [
-    { name: 'GJ_Gamesheet03-hd.png', img: gs3Img},
+    { name: 'GJ_Gamesheet03-hd.png', img: gs03Img},
     {name: 'GJ_Gamesheet04-hd.png', img: gs04Img},
     { name: 'GJ_button_01-hd.png', img: btn01Img },
     { name: 'GJ_button_02-hd.png', img: btn02Img },
@@ -240,5 +240,5 @@ form.addEventListener('submit', async event => {
     { name: 'geode.loader/APISheet-hd.png', img: apisImg }
   ]
   const texturePackZip = await newZip(archivos);
-  const zipLink = await crearLink(texturePackZip, tpname);
+  const texturePackLink = await crearLink(texturePackZip, tpname)
 })
